@@ -3,9 +3,15 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ websiteInfo()->website_name }} - @yield('title', 'Default Title')</title>
+
+
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+          <link rel="icon" type="image/png" href="{{ websiteInfo() && websiteInfo()->first() && websiteInfo()->logo_path ? asset('/storage/'.websiteInfo()->logo_path) : asset('default/website.png') }}">
+        {{-- <link rel="icon" type="image/png" href="{{ websiteInfo() && websiteInfo()->logo_path ? asset('/storage/'.websiteInfo()->logo_path) : asset('storage/logo/d_logo.png') }}"> --}}
+
+
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
