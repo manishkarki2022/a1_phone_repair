@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
    <title>{{ websiteInfo()->website_name }} - @yield('title', 'Default Title')</title>
 
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
-          <link rel="icon" type="image/png" href="{{ websiteInfo() && websiteInfo()->first() && websiteInfo()->logo_path ? asset('/storage/'.websiteInfo()->logo_path) : asset('default/website.png') }}">
+        <link rel="icon" type="image/png" sizes="128*128" href="{{ websiteInfo() && websiteInfo()->first() && websiteInfo()->logo_path ? asset('/storage/' . websiteInfo()->first()->logo_path) : asset('default/website-16x16.png') }}">
+
 
 
 
@@ -39,6 +40,8 @@
     <link rel="stylesheet" href="{{asset('plugins/token_input_bootstrap/css/bootstrap-tokenfield.min.css')}}"  />
     <link rel="stylesheet" href="{{asset('plugins/dropzone/min/dropzone.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/jquery.magnific-popup/magnific-popup.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -65,6 +68,7 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
 
 <!-- jQuery UI 1.11.4 -->
@@ -106,7 +110,9 @@
 <script src="{{asset('plugins/dropzone/min/dropzone.min.js')}}"></script>
     <script  src="{{asset('plugins/token_input_bootstrap/bootstrap-tokenfield.min.js')}}"></script>
 <script  src="{{asset('plugins/jquery.magnific-popup/jquery.magnific-popup.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/npm/nepali-date-converter"></script>
+
+
+
 <script>
     $.ajaxSetup({
         headers: {
@@ -155,6 +161,7 @@
 </script>
 
 
+@stack('scripts')
 @yield('customJs')
 </body>
 </html>

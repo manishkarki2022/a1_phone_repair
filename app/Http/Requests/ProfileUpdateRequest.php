@@ -20,11 +20,31 @@ class ProfileUpdateRequest extends FormRequest
             'email' => [
                 'required',
                 'string',
-                'lowercase',
                 'email',
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            // Optional password field
+            'password' => [
+                'nullable',
+                'string',
+                'min:8',
+                'confirmed', // must match password_confirmation
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/'
+            ],
+            // Current password is required only if user wants to update password
+            'current_password' => ['required_with:password'],
+        ];
+    }
+
+    /**
+     * Custom messages for validation
+     */
+    public function messages(): array
+    {
+        return [
+            'password.regex' => 'Password must be at least 8 characters long, include uppercase and lowercase letters, a number, and a special character.',
+            'current_password.required_with' => 'You must enter your current password to set a new password.',
         ];
     }
 }

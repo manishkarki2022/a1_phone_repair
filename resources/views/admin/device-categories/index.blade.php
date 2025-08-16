@@ -117,7 +117,7 @@
                                     <tr>
                                         <th style="width: 40px;">
                                             <div class="icheck-primary">
-                                                <input type="checkbox" id="select-all">
+                                                
                                                 <label for="select-all"></label>
                                             </div>
                                         </th>
@@ -187,12 +187,19 @@
                                                     <a href="{{ route('device-categories.edit', $category) }}" class="btn btn-warning btn-sm" title="Edit Category">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <form method="POST" action="{{ route('device-categories.destroy', $category) }}" class="d-inline">
+                                                    {{-- <form method="POST" action="{{ route('device-categories.destroy', $category) }}" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm" title="Delete Category" onclick="return confirm('Are you sure you want to delete this category?')">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
+                                                    </form> --}}
+                                                      <a class="btn btn-danger btn-sm" href="#" onclick="confirmDelete({{ $category->id }})">
+                                                     <i class="fas fa-trash"></i> Delete
+                                                    </a>
+                                                    <form id="delete-form-{{ $category->id }}" action="{{ route('device-categories.destroy', $category->id) }}" method="POST" style="display: none;">
+                                                        @csrf
+                                                        @method('DELETE')
                                                     </form>
                                                 </div>
                                             </td>

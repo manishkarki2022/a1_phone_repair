@@ -4,20 +4,31 @@
     <a href="{{ route('dashboard') }}" class="brand-link">
         <img src="{{ websiteInfo() && websiteInfo()->logo_path ? asset('/storage/'.websiteInfo()->logo_path) : asset('storage/logo/d_logo.png') }}"
              alt="AdminLTE Logo"
-             class="brand-image img-circle elevation-3"
-             style="opacity: .8">
+              class="img-fluid mb-2 rounded-circle"
+             style="max-height: 80px; width: 80px; object-fit: cover;">
         <span class="brand-text font-weight-light">
             {{ websiteInfo() && websiteInfo()->website_name ? websiteInfo()->website_name : 'My Website' }}
         </span>
     </a>
+    @php
+            use Carbon\Carbon;
 
+            $hour = Carbon::now()->format('H');
+            $greeting = match (true) {
+                $hour < 12 => 'Good Morning',
+                $hour < 17 => 'Good Afternoon',
+                $hour < 20 => 'Good Evening',
+                default   => 'Good Night',
+            };
+        @endphp
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-
+        <div class="user-panel  p-2  d-flex">
             <div class="info">
-                <a href="#" class="d-block">{{ Auth::user()->name ?? 'Admin User' }}</a>
+                <p class="d-block text-white">
+                    <b>{{ $greeting }},</b> {{ auth()->user()->name ?? 'Admin User' }}
+                </p>
             </div>
         </div>
 
@@ -32,6 +43,32 @@
                     </a>
                 </li>
 
+                <!-- Customer Bookings -->
+                <li class="nav-item {{ request()->routeIs('customer-bookings.*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs('customer-bookings.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-calendar-check"></i>
+                        <p>
+                            Customer Bookings
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('customer-bookings.create') }}" class="nav-link {{ request()->routeIs('customer-bookings.create') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create New Booking</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('customer-bookings.index') }}" class="nav-link {{ request()->routeIs('customer-bookings.index') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>All Bookings</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-header">Content Management</li>
+
                 <!-- Site Settings -->
                 <li class="nav-item">
                     <a href="{{ route('settings.index') }}" class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
@@ -39,144 +76,135 @@
                         <p>Site Settings</p>
                     </a>
                 </li>
+                <li class="nav-item {{ request()->routeIs('admin.banners.*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs('admin.banners.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-bullhorn"></i>
+                        <p>
+                            Discount Banners
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('banners.index') }}" class="nav-link {{ request()->routeIs('banners.index') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>All Banners</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('banners.create') }}" class="nav-link {{ request()->routeIs('banners.create') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add New</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                 <li class="nav-header">Device & Service Management</li>
 
                 <!-- Category -->
-               <li class="nav-item {{ request()->routeIs('device-categories.*') ? 'menu-open' : '' }}">
-    <a href="#" class="nav-link {{ request()->routeIs('device-categories.*') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-th-large"></i>
-        <p>
-            Device Categories
-            <i class="fas fa-angle-left right"></i>
-        </p>
-    </a>
-    <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a href="{{ route('device-categories.create') }}" class="nav-link {{ request()->routeIs('device-categories.create') ? 'active' : '' }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Add New Category</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('device-categories.index') }}" class="nav-link {{ request()->routeIs('device-categories.index') ? 'active' : '' }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>All Categories</p>
-            </a>
-        </li>
-    </ul>
-</li>
-
-                <!-- Posts Menu -->
-                <li class="nav-item {{ request()->routeIs('posts.*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->routeIs('posts.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-edit"></i>
+                <li class="nav-item {{ request()->routeIs('device-categories.*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs('device-categories.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-th-large"></i>
                         <p>
-                            Posts
+                            Device Categories
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="" class="nav-link {{ request()->routeIs('posts.create') ? 'active' : '' }}">
+                            <a href="{{ route('device-categories.create') }}" class="nav-link {{ request()->routeIs('device-categories.create') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Add New Post</p>
+                                <p>Add New Category</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link {{ request()->routeIs('posts.index') ? 'active' : '' }}">
+                            <a href="{{ route('device-categories.index') }}" class="nav-link {{ request()->routeIs('device-categories.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>All Posts</p>
+                                <p>All Categories</p>
                             </a>
                         </li>
                     </ul>
                 </li>
 
-                <!-- Pages Menu -->
-                <li class="nav-item {{ request()->routeIs('pages.*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->routeIs('pages.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-file-alt"></i>
+                <!-- Device Types -->
+                <li class="nav-item {{ request()->routeIs('device-types.*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs('device-types.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-mobile-alt"></i>
                         <p>
-                            Pages
+                            Device Types
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="" class="nav-link {{ request()->routeIs('pages.create') ? 'active' : '' }}">
+                            <a href="{{ route('device-types.create') }}" class="nav-link {{ request()->routeIs('device-types.create') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Add New Page</p>
+                                <p>Add New Type</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link {{ request()->routeIs('pages.index') ? 'active' : '' }}">
+                            <a href="{{ route('device-types.index') }}" class="nav-link {{ request()->routeIs('device-types.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>All Pages</p>
+                                <p>All Types</p>
                             </a>
                         </li>
                     </ul>
                 </li>
 
-                <!-- Media Library -->
-                <li class="nav-item">
-                    <a href="" class="nav-link {{ request()->routeIs('media.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-images"></i>
-                        <p>Media Library</p>
-                    </a>
-                </li>
+                <!-- Repair Services -->
 
-                <!-- Users Management -->
-                <li class="nav-item {{ request()->routeIs('users.*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-users"></i>
+
+                <li class="nav-item {{ request()->routeIs('repair-services.*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs('repair-services.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tools"></i>
                         <p>
-                            Users
+                            Repair Services
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="" class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
+                            <a href="{{ route('repair-services.create') }}" class="nav-link {{ request()->routeIs('repair-services.create') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>All Users</p>
+                                <p>Add New Service</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link {{ request()->routeIs('users.create') ? 'active' : '' }}">
+                            <a href="{{ route('repair-services.index') }}" class="nav-link {{ request()->routeIs('repair-services.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Add New User</p>
+                                <p>All Services</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-
+                <!-- Contact Submissions -->
+                <li class="nav-item {{ request()->routeIs('admin.contacts.*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-envelope"></i>
+                    <p>
+                        Contact Submissions
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('contacts.index') }}" class="nav-link {{ request()->routeIs('admin.contacts.index') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>All Submissions</p>
+                        </a>
+                    </li>
+                </ul>
+                </li>
                 <!-- Separator -->
                 <li class="nav-header">SYSTEM</li>
 
-                <!-- Reports -->
+               <!-- Reports -->
                 <li class="nav-item">
-                    <a href="" class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
+                    <a href="{{ route('reports.index') }}"
+                    class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-bar"></i>
                         <p>Reports</p>
                     </a>
-                </li>
-
-                <!-- System Logs -->
-                <li class="nav-item">
-                    <a href="" class="nav-link {{ request()->routeIs('logs.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-history"></i>
-                        <p>System Logs</p>
-                    </a>
-                </li>
-
-                <!-- Logout -->
-                <li class="nav-item">
-                    <a href="{{ route('logout') }}" class="nav-link"
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="nav-icon fas fa-sign-out-alt"></i>
-                        <p>Logout</p>
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
                 </li>
             </ul>
         </nav>

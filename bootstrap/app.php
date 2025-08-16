@@ -10,9 +10,20 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
+    ->withMiddleware(function (Middleware $middleware) {
+        // Register SEO Tools Facades as middleware aliases
+        $middleware->alias([
+            'SEOMeta' => Artesaos\SEOTools\Facades\SEOMeta::class,
+            'OpenGraph' => Artesaos\SEOTools\Facades\OpenGraph::class,
+            'Twitter' => Artesaos\SEOTools\Facades\TwitterCard::class,
+            'SEO' => Artesaos\SEOTools\Facades\SEOTools::class,
+        ]);
+    })
+    ->withExceptions(function (Exceptions $exceptions) {
         //
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
-        //
-    })->create();
+    ->withProviders([
+        // Register SEO Tools Service Provider
+        Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
+    ])
+    ->create();

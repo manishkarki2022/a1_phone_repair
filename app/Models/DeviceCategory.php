@@ -196,5 +196,9 @@ class DeviceCategory extends Model
     {
         return $this->hasMany(DeviceType::class, 'category_id');
     }
+     public function bookings()
+    {
+        return $this->hasMany(CustomerBooking::class, 'device_category_id');
+    }
 
 }

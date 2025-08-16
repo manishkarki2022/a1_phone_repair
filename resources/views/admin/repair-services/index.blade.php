@@ -259,17 +259,13 @@
                                                    title="Edit Service">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form action="{{ route('repair-services.destroy', $service) }}"
-                                                      method="POST"
-                                                      style="display: inline-block;"
-                                                      onsubmit="return confirm('Are you sure you want to delete this service?\n\nService: {{ $service->service_name }}\nThis action cannot be undone.')">
+                                             
+                                                <a class="btn btn-danger btn-sm" href="#" onclick="confirmDelete({{ $service->id   }})">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </a>
+                                                <form id="delete-form-{{ $service->id}}" action="{{ route('repair-services.destroy', $service->id) }}" method="POST" style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit"
-                                                            class="btn btn-danger btn-sm"
-                                                            title="Delete Service">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
                                                 </form>
                                             </div>
                                         </td>

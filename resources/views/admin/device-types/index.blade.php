@@ -110,18 +110,13 @@
                                            title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="{{ route('device-types.destroy', $deviceType->id) }}"
-                                              method="POST"
-                                              class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                    class="btn btn-sm btn-danger"
-                                                    title="Delete"
-                                                    onclick="return confirm('Are you sure you want to delete this device type?')">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
+                                          <a class="btn btn-danger btn-sm" href="#" onclick="confirmDelete({{ $deviceType->id }})">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                    <form id="delete-form-{{ $deviceType->id }}" action="{{ route('device-types.destroy', $deviceType->id) }}" method="POST" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
                                     </div>
                                 </td>
                             </tr>

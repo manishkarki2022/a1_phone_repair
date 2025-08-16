@@ -67,4 +67,13 @@ class DeviceType extends Model
     {
         return $this->status === 'active';
     }
+    public function repairServices()
+    {
+        return $this->hasMany(RepairService::class);
+    }
+      public function bookings()
+    {
+        return $this->hasMany(CustomerBooking::class, 'device_type_id');
+    }
+
 }

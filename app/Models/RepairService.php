@@ -37,6 +37,10 @@ class RepairService extends Model
     {
         return $this->belongsTo(DeviceType::class);
     }
+     public function bookings()
+    {
+        return $this->hasMany(CustomerBooking::class, 'repair_service_id');
+    }
 
     // Scopes for comprehensive filtering
     public function scopeActive($query)

@@ -6,6 +6,7 @@ use App\Models\DeviceType;
 use App\Models\DeviceCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class DeviceTypeController extends Controller
 {
@@ -38,6 +39,72 @@ class DeviceTypeController extends Controller
 
     return view('admin.device-types.index', compact('deviceTypes'));
 }
+
+public function getBrands(Request $request)
+{
+    $search = $request->get('q');
+
+    $query = DeviceType::select('brand')
+        ->whereNotNull('brand')
+        ->where('brand', '!=', '')
+        ->distinct();
+
+    if ($search) {
+        $query->where('brand', 'LIKE', "%{$search}%");
+    }
+
+    $brands = $query->orderBy('brand')
+        ->limit(20)
+        ->pluck('brand')
+        ->map(function ($brand) {
+            return [
+                'id' => $brand,
+                'text' => $brand
+            ];
+        });
+
+    return response()->json([
+        'results' => $brands
+    ]);
+}
+
+/**
+ * Get models for Select2 AJAX
+ */
+public function getModels(Request $request)
+{
+    $search = $request->get('q');
+    $brand = $request->get('brand');
+
+    $query = DeviceType::select('model')
+        ->whereNotNull('model')
+        ->where('model', '!=', '')
+        ->distinct();
+
+    // Filter by brand if provided
+    if ($brand) {
+        $query->where('brand', $brand);
+    }
+
+    if ($search) {
+        $query->where('model', 'LIKE', "%{$search}%");
+    }
+
+    $models = $query->orderBy('model')
+        ->limit(20)
+        ->pluck('model')
+        ->map(function ($model) {
+            return [
+                'id' => $model,
+                'text' => $model
+            ];
+        });
+
+    return response()->json([
+        'results' => $models
+    ]);
+}
+
 
 
     /**
