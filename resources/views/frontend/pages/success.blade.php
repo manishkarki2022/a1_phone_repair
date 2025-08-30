@@ -134,7 +134,6 @@
                                         </div>
                                         @endforeach
                                     </div>
-
                                     <!-- Service Summary -->
                                     <div class="alert alert-success">
                                         <div class="row text-center">
@@ -157,14 +156,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    @if($booking->admin_quoted_price > 0)
-                                    <div class="alert alert-info">
-                                        <h6 class="mb-1"><i class="fas fa-dollar-sign me-2"></i>Estimated Total</h6>
-                                        <h4 class="mb-0 text-primary">${{ number_format($booking->admin_quoted_price, 2) }}</h4>
-                                        <small class="text-muted">Final pricing will be confirmed after device assessment</small>
-                                    </div>
-                                    @endif
                                 @else
                                     <!-- Custom Service -->
                                     <div class="alert alert-warning">

@@ -54,7 +54,7 @@
                     </div>
                     <div class="summary-item">
                         <span class="summary-label">Estimated Price:</span>
-                        <span id="estimatedPrice" class="summary-value"></span>
+                        {{-- <span id="estimatedPrice" class="summary-value"></span> --}}
                     </div>
                     <div class="summary-item">
                         <span class="summary-label">Final Price:</span>
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('problemInfo').textContent = data.device_issue_description;
         document.getElementById('statusInfo').textContent = formatStatus(data.status);
         document.getElementById('priorityInfo').textContent = formatPriority(data.priority);
-        document.getElementById('estimatedPrice').textContent = data.admin_quoted_price ? `$${data.admin_quoted_price.toFixed(2)}` : 'Not quoted yet';
+        // document.getElementById('estimatedPrice').textContent = data.admin_quoted_price ? `$${data.admin_quoted_price.toFixed(2)}` : 'Not quoted yet';
         document.getElementById('finalPrice').textContent = data.admin_final_price ? `$${data.admin_final_price.toFixed(2)}` : 'Not finalized';
         document.getElementById('completionDate').textContent = data.estimated_completion_time ? formatDate(data.estimated_completion_time) : 'To be determined';
 
