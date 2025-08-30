@@ -13,6 +13,11 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ReportController;
 
+
+
+Route::get('/errors-404', function () {
+    abort(404);
+});
 Route::get('/', [FrontendController::class, 'home'])->name('home');
     Route::get('/book-repair', [FrontendController::class, 'create'])->name('booking.create');
 

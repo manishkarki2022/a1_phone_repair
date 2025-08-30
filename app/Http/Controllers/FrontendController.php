@@ -52,7 +52,7 @@ class FrontendController extends Controller
         Twitter::setSite('@yourtwitterhandle'); // Replace with actual handle if needed
     }
 
-   public function home()
+public function home()
 {
     $heroSliders = DiscountBanner::activeHeroSlides()->get();
 
@@ -60,7 +60,19 @@ class FrontendController extends Controller
     if ($heroSliders->isNotEmpty()) {
         DiscountBanner::whereIn('id', $heroSliders->pluck('id'))->increment('views');
     }
-      $this->setSeo(); // Uses default website settings
+
+    // If no hero sliders, prepare a default one
+    if ($heroSliders->isEmpty()) {
+        $heroSliders = collect([
+            (object)[
+                'title' => websiteInfo()->website_name,
+                'content' => 'Professional repair services for all your devices',
+                'image_url' => asset('images/default-hero.png'), // keep a default image in public/images
+            ]
+        ]);
+    }
+
+    $this->setSeo(); // Uses default website settings
 
     return view('frontend.pages.home', compact('heroSliders'));
 }

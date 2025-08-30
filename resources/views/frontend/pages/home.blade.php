@@ -4,41 +4,100 @@
 
 @section('content')
 <!-- Hero Section with structured data -->
-<section class="hero" itemscope itemtype="https://schema.org/WebPageElement">
-    <div class="swiper hero-swiper">
-        <div class="swiper-wrapper">
-            @forelse($heroSliders as $slider)
-            <div class="swiper-slide hero-slide" itemprop="hasPart" itemscope itemtype="https://schema.org/ImageObject">
-                @if($slider->image_url)
-                <img class="hero-img"
-                     src="{{ $slider->image_url }}"
-                     alt="{{ $slider->title }}"
-                     loading="lazy"
-                     itemprop="contentUrl">
-                @endif
-                <div class="slide-content">
-                    <h1 itemprop="name">{{ $slider->title }}</h1>
-                    @if($slider->content)
-                    <div class="slide-description" itemprop="description">
-                        {!! nl2br(e($slider->content)) !!}
+ <style>
+        /* Hero slider container */
+        .hero-slider {
+            width: 100%;
+        }
+
+        /* Images: scale properly on mobile, tablet */
+        .hero-slider .carousel-item img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Captions */
+        .carousel-caption {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+        }
+
+        /* Large screens: full viewport height, cover image */
+        @media (min-width: 992px) { /* lg and above */
+            .hero-slider {
+                height: 100vh;
+            }
+            .hero-slider .carousel-item img {
+                height: 100vh;
+                object-fit: cover; /* fill full screen */
+            }
+            .carousel-caption {
+                bottom: 20%;
+            }
+        }
+
+        /* Medium screens: slightly taller images */
+        @media (min-width: 768px) and (max-width: 991px) { /* md */
+            .hero-slider .carousel-item img {
+                max-height: 60vh;
+            }
+        }
+
+        /* Mobile: keep image proportional */
+        @media (max-width: 767px) {
+            .hero-slider .carousel-item img {
+                max-height: 50vh;
+            }
+        }
+    </style>
+
+
+<!-- Hero Section -->
+<section class="hero-section" itemscope itemtype="https://schema.org/ImageGallery">
+    <div id="heroCarousel" class="carousel slide hero-slider" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @foreach($heroSliders as $index => $slider)
+                <div class="carousel-item @if($index == 0) active @endif">
+                    <img src="{{ $slider->image_url }}" class="d-block w-100" alt="{{ $slider->title ?? 'Hero Slide' }}">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h2>{{ $slider->title ?? 'Welcome to Our Website' }}</h2>
+                        @if(!empty($slider->content))
+                            <p>{!! nl2br(e($slider->content)) !!}</p>
+                        @endif
                     </div>
-                    @endif
                 </div>
-            </div>
-            @empty
-            <div class="swiper-slide hero-slide">
-                <div class="slide-content">
-                    <h1>Welcome to {{ websiteInfo()->website_name }}</h1>
-                    <div class="slide-description">
-                        Professional repair services for all your devices
-                    </div>
-                    <a href="#services" class="cta-button">View Services</a>
-                </div>
-            </div>
-            @endforelse
+            @endforeach
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+
+        <!-- Carousel Indicators -->
+        <div class="carousel-indicators">
+            @foreach($heroSliders as $index => $slider)
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ $index }}"
+                        class="@if($index == 0) active @endif"
+                        aria-current="@if($index == 0) true @endif">
+                </button>
+            @endforeach
         </div>
     </div>
 </section>
+
+
+
 
 <!-- Discount Banners with microdata -->
 <section class="discount-banners" itemscope itemtype="https://schema.org/ItemList">
